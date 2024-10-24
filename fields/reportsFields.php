@@ -275,8 +275,8 @@ function add_acf_fields()
                     ),
                     array(
                         'key' => 'field_6711241d25b38',
-                        'label' => 'Alcalinidad P ppm',
-                        'name' => 'alcalinidad_p_ppm',
+                        'label' => 'Alcalinidad M ppm',
+                        'name' => 'alcalinidad_m_ppm',
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 700',
@@ -320,12 +320,12 @@ function add_acf_fields()
                         'append' => '',
                     ),
                     array(
-                        'key' => 'field_6711265dc15d0',
-                        'label' => 'Alcalinidad OH ppm',
-                        'name' => 'alcalinidad_oh_ppm',
+                        'key' => 'field_671ab90f10865',
+                        'label' => 'Solidos Disueltos ppm',
+                        'name' => 'solidos_disueltos_ppm',
                         'aria-label' => '',
                         'type' => 'number',
-                        'instructions' => 'Máximo 2500',
+                        'instructions' => '30 - 60',
                         'required' => 1,
                         'conditional_logic' => 0,
                         'wrapper' => array(
