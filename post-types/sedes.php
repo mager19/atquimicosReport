@@ -4,6 +4,7 @@ if (!class_exists('ATQuimicosSedesCPT')) {
     {
         function __construct()
         {
+            require_once(ATQUIMICOS_REPORTS_PATH . 'fields/sedesFields.php');
             add_action('init', array($this, 'create_post_type'));
             add_filter('use_block_editor_for_post_type', array($this, 'disable_gutenberg_for_atquimicosclients'), 10, 2);
         }
