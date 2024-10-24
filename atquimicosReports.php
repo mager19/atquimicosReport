@@ -45,6 +45,7 @@ if (!class_exists('ATQuimicosReports')) {
         {
 
             $this->define_constants();
+            add_action('init', array($this, 'enqueue_scripts'));
 
             require_once(ATQUIMICOS_REPORTS_PATH . 'post-types/reports.php');
             $reports = new ATQuimicosReportsCPT();
@@ -53,12 +54,8 @@ if (!class_exists('ATQuimicosReports')) {
             $sedes = new ATQuimicosSedesCPT();
 
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/addsede.php');
-
-            add_shortcode('acf_form_sedes', array($this, 'acf_formulario_sedes'));
-
-            add_filter('acf/prepare_field/name=_post_title', array($this, 'my_acf_prepare_field'));
-
-            add_action('init', array($this, 'enqueue_scripts'));
+            require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/addReport.php');
+            $addReport = new AddReport();
 
             $myUpdateChecker = PucFactory::buildUpdateChecker(
                 'https://github.com/mager19/atquimicosReport/',
@@ -132,57 +129,8 @@ if (!class_exists('ATQuimicosReports')) {
          */
         public static function uninstall() {}
 
-        public function acf_formulario_sedes()
-        {
-            if (function_exists('acf_form')) {
-                ob_start(); // Usamos ob_start para evitar que acf_form_head se muestre fuera de lugar
-                acf_form_head();
-                acf_form(array(
-                    'post_id'       => 'new_post',
-                    'new_post'      => array(
-                        'post_type'     => 'atquimicosreports',
-                        'post_status'   => 'publish'
-                    ),
-                    'id'            => 'acf_form_atquimicos',
-                    'field_groups'  => array('group_670ec5544293d'),
-                    'submit_value'  => 'Enviar',
-                    'post_content'   => false,
-                    'post_title' => true,
-                    'return' => '',
-                ));
-            } else {
-                return '<p>El plugin ACF no está activo.</p>';
-            }
-
-            return ob_get_clean();
-        }
-
-        public function my_acf_save_post($post_id)
-        {
-            wp_redirect(get_permalink($post_id));
-            exit;
-        }
-
-
-        public function my_acf_prepare_field($field)
-        {
-
-            $field['label'] = "Nombre del Reporte";
-            $field['instructions'] = "Por favor ingrese el nombre del reporte según el formato de reporte";
-
-            return $field;
-        }
-
         public function enqueue_scripts()
         {
-            wp_enqueue_script(
-                'acf-dynamic-sedes',
-                ATQUIMICOS_REPORTS_URL . 'assets/js/sedes.js',
-                array('jquery'), // Include jQuery
-                ATQUIMICOS_REPORTS_VERSION,
-                true
-            );
-
             wp_enqueue_style(
                 'atquimicos-styles',
                 ATQUIMICOS_REPORTS_URL . 'assets/css/styles.css',
@@ -196,7 +144,6 @@ if (!class_exists('ATQuimicosReports')) {
     }
 }
 
-// Plugin Instantiation
 if (class_exists('ATQuimicosReports')) {
 
     // Installation and uninstallation hooks
@@ -204,6 +151,5 @@ if (class_exists('ATQuimicosReports')) {
     register_deactivation_hook(__FILE__, array('ATQuimicosReports', 'deactivate'));
     register_uninstall_hook(__FILE__, array('ATQuimicosReports', 'uninstall'));
 
-    // Instatiate the plugin class
     $atquimicosReports = new ATQuimicosReports();
 }
