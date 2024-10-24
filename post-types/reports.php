@@ -4,11 +4,17 @@ if (!class_exists('ATQuimicosReportsCPT')) {
     {
         function __construct()
         {
+            add_filter('acf/settings/save_json', array($this, 'atquimicos_reports_acf_json_save_point'));
+            add_filter('acf/settings/load_json', array($this, 'atquimicos_reports_acf_json_load_point'));
             add_action('init', array($this, 'create_post_type'));
-            add_action('init', array($this, 'create_year_taxonomy'));
-            add_action('init', array($this, 'create_month_taxonomy'));
             add_filter('use_block_editor_for_post_type', array($this, 'disable_gutenberg_for_atquimicosreports'), 10, 2);
-            add_filter('get_terms_orderby', array($this, 'order_month_terms'), 10, 2);
+
+            // add_action('acf/include_fields', array($this, 'add_acf_fields'));
+
+
+            // acf-export-reports-fields
+
+
         }
 
         public function create_post_type()
@@ -38,101 +44,32 @@ if (!class_exists('ATQuimicosReportsCPT')) {
             ]);
         }
 
-        public function create_year_taxonomy()
-        {
-            $labels = array(
-                'name'              => _x('Años', 'taxonomy general name', 'textdomain'),
-                'singular_name'     => _x('Año', 'taxonomy singular name', 'textdomain'),
-                'search_items'      => __('Buscar Años', 'textdomain'),
-                'all_items'         => __('Todos los Años', 'textdomain'),
-                'parent_item'       => __('Año Padre', 'textdomain'),
-                'parent_item_colon' => __('Año Padre:', 'textdomain'),
-                'edit_item'         => __('Editar Año', 'textdomain'),
-                'update_item'       => __('Actualizar Año', 'textdomain'),
-                'add_new_item'      => __('Añadir Nuevo Año', 'textdomain'),
-                'new_item_name'     => __('Nombre del Nuevo Año', 'textdomain'),
-                'menu_name'         => __('Año', 'textdomain'),
-            );
-
-            $args = array(
-                'hierarchical'      => true,
-                'labels'            => $labels,
-                'show_ui'           => false,
-                'show_admin_column' => true,
-                'query_var'         => true,
-                'rewrite'           => array('slug' => 'year'),
-            );
-
-            register_taxonomy('year', array('atquimicosreports'), $args);
-
-            if (!term_exists('2024', 'year')) {
-                wp_insert_term('2024', 'year');
-            }
-        }
-
-        public function create_month_taxonomy()
-        {
-            $labels = array(
-                'name'              => _x('Meses', 'taxonomy general name', 'textdomain'),
-                'singular_name'     => _x('Mes', 'taxonomy singular name', 'textdomain'),
-                'search_items'      => __('Buscar Meses', 'textdomain'),
-                'all_items'         => __('Todos los Meses', 'textdomain'),
-                'parent_item'       => __('Mes Padre', 'textdomain'),
-                'parent_item_colon' => __('Mes Padre:', 'textdomain'),
-                'edit_item'         => __('Editar Mes', 'textdomain'),
-                'update_item'       => __('Actualizar Mes', 'textdomain'),
-                'add_new_item'      => __('Añadir Nuevo Mes', 'textdomain'),
-                'new_item_name'     => __('Nombre del Nuevo Mes', 'textdomain'),
-                'menu_name'         => __('Mes', 'textdomain'),
-            );
-
-            $args = array(
-                'hierarchical'      => true,
-                'labels'            => $labels,
-                'show_ui'           => false,
-                'show_admin_column' => true,
-                'query_var'         => true,
-                'rewrite'           => array('slug' => 'mes'),
-            );
-
-            register_taxonomy('month', array('atquimicosreports'), $args);
-
-            $months = array(
-                'Enero',
-                'Febrero',
-                'Marzo',
-                'Abril',
-                'Mayo',
-                'Junio',
-                'Julio',
-                'Agosto',
-                'Septiembre',
-                'Octubre',
-                'Noviembre',
-                'Diciembre'
-            );
-
-            foreach ($months as $month) {
-                if (!term_exists($month, 'month')) {
-                    wp_insert_term($month, 'month');
-                }
-            }
-        }
-
-        public function order_month_terms($orderby, $taxonomies)
-        {
-            if (in_array('month', $taxonomies)) {
-                $orderby = "FIELD(name, 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre')";
-            }
-            return $orderby;
-        }
-
         public function disable_gutenberg_for_atquimicosreports($use_block_editor, $post_type)
         {
             if ($post_type === 'atquimicosreports') {
                 return false;
             }
             return $use_block_editor;
+        }
+
+        public function atquimicos_reports_acf_json_save_point($path)
+        {
+            $path = plugin_dir_path(__FILE__) . 'fields';
+
+            return $path;
+        }
+
+
+        public function atquimicos_reports_acf_json_load_point($paths)
+        {
+            // Elimina el path predeterminado (la carpeta del tema activo).
+            unset($paths[0]);
+
+
+            // Añade el path del plugin donde está tu JSON exportado.
+            $paths[] = plugin_dir_path(__FILE__) . '/fields';
+
+            return $paths;
         }
     }
 }

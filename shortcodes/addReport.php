@@ -23,13 +23,15 @@ if (!class_exists('AddReport')) {
                     ),
                     'id'            => 'acf_form_atquimicos',
                     'field_groups'  => array('group_670ec5544293d'),
-                    'submit_value'  => 'Enviar',
+                    'submit_value'  => 'Crear Reporte',
+                    'honeypot' => true,
+                    'kses' => true,
                     'post_content'   => false,
                     'post_title' => true,
                     'return' => '',
                 ));
             } else {
-                return '<p>El plugin ACF no está activo.</p>';
+                return '<p>El plugin ACF no está activo. Este plugin es requerido para crear los reportes</p>';
             }
 
             return ob_get_clean();

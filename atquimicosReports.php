@@ -88,6 +88,7 @@ if (!class_exists('ATQuimicosReports')) {
          */
         public static function activate()
         {
+
             // Crear el rol de cliente
             add_role(
                 'cliente', // Slug del rol
