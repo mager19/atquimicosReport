@@ -7,6 +7,7 @@ if (!class_exists('ATQuimicosReportsCPT')) {
             require_once(ATQUIMICOS_REPORTS_PATH . 'fields/reportsFields.php');
             add_action('init', array($this, 'create_post_type'));
             add_filter('use_block_editor_for_post_type', array($this, 'disable_gutenberg_for_atquimicosreports'), 10, 2);
+            add_filter('the_content', array($this, 'load_custom_template'));
         }
 
         public function create_post_type()
@@ -42,6 +43,21 @@ if (!class_exists('ATQuimicosReportsCPT')) {
                 return false;
             }
             return $use_block_editor;
+        }
+
+
+
+        public function load_custom_template($content)
+        {
+            if (is_singular('atquimicosreports')) {
+
+                ob_start();
+                require_once ATQUIMICOS_REPORTS_PATH . 'templates/single-atquimicosreports.php';
+
+                return ob_get_clean();
+            }
+
+            return $content; // Retorna el template original si no es el del CPT
         }
     }
 }

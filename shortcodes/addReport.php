@@ -1,6 +1,5 @@
 <?php
 if (!class_exists('AddReport')) {
-
     class AddReport
     {
         public function __construct()
@@ -8,6 +7,18 @@ if (!class_exists('AddReport')) {
 
             add_shortcode('acf_form_report', array($this, 'acf_formulario_report'));
             add_filter('acf/prepare_field/name=_post_title', array($this, 'my_acf_prepare_field'));
+            add_filter('acf/form/redirect', array($this, 'redirect_to_single_report'), 10, 1);
+            // add_action('wp', array($this, 'message'));
+            add_filter('the_content', array($this, 'message'));
+        }
+
+        public function my_acf_prepare_field($field)
+        {
+
+            $field['label'] = "Nombre del Reporte";
+            $field['instructions'] = "Por favor ingrese el nombre del reporte según el formato de reporte";
+
+            return $field;
         }
 
         public function acf_formulario_report()
@@ -28,7 +39,8 @@ if (!class_exists('AddReport')) {
                     'kses' => true,
                     'post_content'   => false,
                     'post_title' => true,
-                    'return' => '',
+                    'return' => '%post_url%?report=new',
+                    'html_updated_message'  => '<div id="message" class="updated"><p>%s</p></div>',
                 ));
             } else {
                 return '<p>El plugin ACF no está activo. Este plugin es requerido para crear los reportes</p>';
@@ -37,14 +49,16 @@ if (!class_exists('AddReport')) {
             return ob_get_clean();
         }
 
-        public function my_acf_prepare_field($field)
+        public function message($content)
         {
+            if (isset($_GET['report']) && $_GET['report'] === 'new') {
 
-            $field['label'] = "Nombre del Reporte";
-            $field['instructions'] = "Por favor ingrese el nombre del reporte según el formato de reporte";
+                $message = '<div class="atquimicos__notice">¡El reporte se ha creado exitosamente!</div>';
+                // Concatenar el mensaje al contenido de la página
+                return $message . $content;
+            }
 
-            return $field;
+            return $content;
         }
     }
-    new AddReport();
 }

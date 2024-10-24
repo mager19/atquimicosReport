@@ -23,7 +23,7 @@ if (!class_exists('ATQuimicosSedesCPT')) {
                 'hierarchical' => true,
                 'show_ui' => true,
                 'show_in_menu' => true,
-                'menu_position' => 55,
+                'menu_position' => 56,
                 'show_in_admin_bar' => true,
                 'show_in_nav_menus' => true,
                 'can_export' => true,
