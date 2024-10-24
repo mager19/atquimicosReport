@@ -33,8 +33,11 @@ if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
-if (!class_exists('ATQuimicosReports')) {
+require 'plugin-update-checker/plugin-update-checker.php';
 
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+if (!class_exists('ATQuimicosReports')) {
     class ATQuimicosReports
     {
 
@@ -56,6 +59,15 @@ if (!class_exists('ATQuimicosReports')) {
             add_filter('acf/prepare_field/name=_post_title', array($this, 'my_acf_prepare_field'));
 
             add_action('init', array($this, 'enqueue_scripts'));
+
+            $myUpdateChecker = PucFactory::buildUpdateChecker(
+                'https://github.com/mager19/atquimicosReport/',
+                __FILE__,
+                'ATQuimicosReports'
+            );
+
+            //Set the branch that contains the stable release.
+            $myUpdateChecker->setBranch('releases');
         }
 
         public function initialize_acf_form()
