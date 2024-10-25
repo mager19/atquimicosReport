@@ -8,7 +8,6 @@ if (!class_exists('AddReport')) {
             add_shortcode('acf_form_report', array($this, 'acf_formulario_report'));
             add_filter('acf/prepare_field/name=_post_title', array($this, 'my_acf_prepare_field'));
             add_filter('acf/form/redirect', array($this, 'redirect_to_single_report'), 10, 1);
-            // add_action('wp', array($this, 'message'));
             add_filter('the_content', array($this, 'message'));
         }
 
@@ -23,6 +22,17 @@ if (!class_exists('AddReport')) {
 
         public function acf_formulario_report()
         {
+            // Verificar si el usuario está logueado
+            if (!is_user_logged_in()) {
+                return '<p>Usted no tiene los permisos necesario para ver el contenido.</p>';
+            }
+
+            // Verificar si el usuario tiene el rol adecuado
+            $current_user = wp_get_current_user();
+            if (!in_array('tecnico', $current_user->roles) && !in_array('administrator', $current_user->roles)) {
+                return '<p>No tienes permisos para acceder a este formulario.</p>';
+            }
+
             if (function_exists('acf_form')) {
                 ob_start(); // Usamos ob_start para evitar que acf_form_head se muestre fuera de lugar
                 acf_form_head();

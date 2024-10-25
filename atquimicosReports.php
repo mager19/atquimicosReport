@@ -37,6 +37,11 @@ require 'plugin-update-checker/plugin-update-checker.php';
 
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
+require_once('utils/createPage.php');
+
+use ATQuimicosReportsCreatePage;
+use ATReports\utils;
+
 if (!class_exists('ATQuimicosReports')) {
     class ATQuimicosReports
     {
@@ -54,6 +59,7 @@ if (!class_exists('ATQuimicosReports')) {
             $sedes = new ATQuimicosSedesCPT();
 
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/addsede.php');
+            $addSede = new AddSede();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/addReport.php');
             $addReport = new AddReport();
 
@@ -107,6 +113,8 @@ if (!class_exists('ATQuimicosReports')) {
                 )
             );
 
+            ATReports\utils\ATQuimicosReportsCreatePage::check_and_create_page();
+
             // Limpiar la caché de roles y capacidades
             if (function_exists('wp_roles')) {
                 wp_roles()->flush_caps();
@@ -122,6 +130,8 @@ if (!class_exists('ATQuimicosReports')) {
         {
             remove_role('cliente');
             remove_role('tecnico');
+            // ATQuimicosReportsCreatePage::delete_page();
+            ATReports\utils\ATQuimicosReportsCreatePage::delete_page();
             flush_rewrite_rules();
         }
 

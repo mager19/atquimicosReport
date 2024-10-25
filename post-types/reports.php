@@ -45,8 +45,6 @@ if (!class_exists('ATQuimicosReportsCPT')) {
             return $use_block_editor;
         }
 
-
-
         public function load_custom_template($content)
         {
             if (is_singular('atquimicosreports')) {

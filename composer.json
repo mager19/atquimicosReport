@@ -1,0 +1,15 @@
+{
+	"name": "atquimicos/reports",
+	"autoload": {
+		"psr-4": {
+			"Atquimicos\\Reports\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "mager19",
+			"email": "mager19@gmail.com"
+		}
+	],
+	"require": {}
+}

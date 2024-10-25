@@ -7,6 +7,7 @@ if (!class_exists('ATQuimicosSedesCPT')) {
             require_once(ATQUIMICOS_REPORTS_PATH . 'fields/sedesFields.php');
             add_action('init', array($this, 'create_post_type'));
             add_filter('use_block_editor_for_post_type', array($this, 'disable_gutenberg_for_atquimicosclients'), 10, 2);
+            add_filter('the_content', array($this, 'load_custom_template'));
         }
 
         public function create_post_type()
@@ -77,7 +78,18 @@ if (!class_exists('ATQuimicosSedesCPT')) {
 
             return $field;
         }
-    }
 
-    new ATQuimicosSedesCPT();
+        public function load_custom_template($content)
+        {
+            if (is_singular('atquimicossedes')) {
+
+                ob_start();
+                require_once ATQUIMICOS_REPORTS_PATH . 'templates/single-atquimicossedes.php';
+
+                return ob_get_clean();
+            }
+
+            return $content; // Retorna el template original si no es el del CPT
+        }
+    }
 }

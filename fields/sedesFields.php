@@ -25,7 +25,7 @@ function sedesFields()
                 'role' => array(
                     0 => 'cliente',
                 ),
-                'return_format' => 'id',
+                'return_format' => 'object',
                 'multiple' => 0,
                 'allow_null' => 0,
                 'allow_in_bindings' => 0,
