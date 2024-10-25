@@ -9,6 +9,12 @@ $type = get_field('tipo');
 ?>
 
 <div class="container__atquimicos__report">
+    <?php
+    if (!is_user_logged_in()) {
+        echo '<p>Debes iniciar sesión para ver este contenido.</p>';
+        return;
+    }
+    ?>
     <h3>Informe: <?php the_title(); ?></h3>
     <p><span>Fecha: <?php echo $fecha; ?></p>
     <p><span>Técnico ATQuimicos: </span><?php echo $tecnico['display_name']; ?></p>

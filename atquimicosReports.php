@@ -52,16 +52,19 @@ if (!class_exists('ATQuimicosReports')) {
             $this->define_constants();
             add_action('init', array($this, 'enqueue_scripts'));
 
+            // posttypes
             require_once(ATQUIMICOS_REPORTS_PATH . 'post-types/reports.php');
             $reports = new ATQuimicosReportsCPT();
-
             require_once(ATQUIMICOS_REPORTS_PATH . 'post-types/sedes.php');
             $sedes = new ATQuimicosSedesCPT();
 
+            // shortcodes
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/addsede.php');
             $addSede = new AddSede();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/addReport.php');
             $addReport = new AddReport();
+            require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/registerUser.php');
+            $registerUser = new RegisterUser();
 
             $myUpdateChecker = PucFactory::buildUpdateChecker(
                 'https://github.com/mager19/atquimicosReport/',

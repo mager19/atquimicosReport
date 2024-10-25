@@ -4,14 +4,50 @@
 	--color-charcoal: #343837;
 }
 
-#acf_form_atquimicos {
+.userForm {
+	label {
+		margin-bottom: 5px;
+	}
+	input {
+		margin-bottom: 1rem;
+		padding-left: 5px;
+	}
+
+	.registerButton {
+		background-color: #0073aa;
+		border: none;
+		color: white;
+		cursor: pointer;
+		font-size: 16px;
+		height: 40px;
+		margin-top: 1rem;
+		padding: 0 2rem;
+	}
+
+	select {
+		border: 1px solid var(--color-gray);
+		font-size: 1rem;
+		padding-left: 5px;
+		width: 100%;
+	}
+}
+
+#acf_form_atquimicos,
+.userForm {
 	.description {
 		font-size: 12px;
+	}
+
+	label {
+		display: block;
+
+		width: 100%;
 	}
 
 	input {
 		border: 1px solid var(--color-gray);
 		height: 40px;
+		width: 100%;
 	}
 
 	select {
