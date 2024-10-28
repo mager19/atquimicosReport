@@ -64,7 +64,17 @@ if (!class_exists('RegisterUser')) {
             ob_start();
 ?>
             <div class="container__atquimicos__report">
+                <?php
+                $user = wp_get_current_user();
+
+                $current_user = wp_get_current_user();
+                if (!in_array('administrator', $current_user->roles)) {
+                    echo "<p>Usted no tiene los permisos suficientes para ejecutar esta acción.</p>";
+                    return ob_get_clean();
+                }
+                ?>
                 <p>Los datos de acceso serán enviados al usuario directamente a su email</p>
+
                 <form method="post" class="userForm">
                     <label for="username">Nombre de usuario</label>
                     <input type="text" name="username" required>
