@@ -32,18 +32,50 @@ if (!class_exists('ATQuimicosReportsCreatePage')) {
                 'post_type' => 'page'
             );
 
+            $login = array(
+                'post_title' => 'Login ATQuimicos Clientes',
+                'post_content' => '
+                                    <!-- wp:shortcode -->
+                                        [atquimicos_login_form]
+                                    <!-- /wp:shortcode -->
+                ',
+                'post_status' => 'publish',
+                'post_author' => 1,
+                'post_type' => 'page'
+            );
+
+            $reporte = array(
+                'post_title' => 'Reportes',
+                'post_content' => '',
+                'post_status' => 'publish',
+                'post_author' => 1,
+                'post_type' => 'page'
+            );
+
             $createReport_page_id = wp_insert_post($createReport);
             $createSede_page_id = wp_insert_post($createSede);
+            $login_page_id = wp_insert_post($login);
+            $reporte_page_id = wp_insert_post($reporte);
+
             update_option('atquimicos_reports_page_id', $createReport_page_id);
             update_option('atquimicos_sede_page_id', $createSede_page_id);
+            update_option('atquimicos_login_page_id', $login_page_id);
+            update_option('atquimicos_reporte_page_id', $reporte_page_id);
         }
 
         public static function delete_page()
         {
             $createReport_page_id = get_option('atquimicos_reports_page_id');
             $createSede_page_id = get_option('atquimicos_sede_page_id');
+            $login_page_id = get_option('atquimicos_login_page_id');
+            $reporte_page_id = get_option('atquimicos_reporte_page_id');
 
-            $pages = array($createReport_page_id, $createSede_page_id);
+            $pages = array(
+                $createReport_page_id,
+                $createSede_page_id,
+                $login_page_id,
+                $reporte_page_id
+            );
 
             foreach ($pages as $page_id) {
                 if ($page_id) {

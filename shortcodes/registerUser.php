@@ -10,7 +10,7 @@ if (!class_exists('RegisterUser')) {
 
         function custom_user_registration_form()
         {
-            if ($_POST['custom_user_registration'] == '1') {
+            if (isset($_POST['custom_user_registration']) && $_POST['custom_user_registration'] == '1') {
                 // Datos del formulario
                 $username = sanitize_text_field($_POST['username']);
                 $email = sanitize_email($_POST['email']);

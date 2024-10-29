@@ -39,7 +39,6 @@ use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 require_once('utils/createPage.php');
 
-use ATQuimicosReportsCreatePage;
 use ATReports\utils;
 
 if (!class_exists('ATQuimicosReports')) {
@@ -65,6 +64,8 @@ if (!class_exists('ATQuimicosReports')) {
             $addReport = new AddReport();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/registerUser.php');
             $registerUser = new RegisterUser();
+            require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/loginUser.php');
+            $loginUser = new LoginUser();
 
             $myUpdateChecker = PucFactory::buildUpdateChecker(
                 'https://github.com/mager19/atquimicosReport/',
