@@ -395,7 +395,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 5',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -418,7 +418,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 150',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -441,7 +441,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '0.',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -609,7 +609,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 200',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -632,7 +632,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 10',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
