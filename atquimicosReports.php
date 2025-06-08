@@ -50,6 +50,7 @@ if (!class_exists('ATQuimicosReports')) {
 
             $this->define_constants();
             add_action('init', array($this, 'enqueue_scripts'));
+            add_action('admin_init', array($this, 'verify_pages_configuration'));
 
             // posttypes
             require_once(ATQUIMICOS_REPORTS_PATH . 'post-types/reports.php');
@@ -66,6 +67,8 @@ if (!class_exists('ATQuimicosReports')) {
             $registerUser = new RegisterUser();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/loginUser.php');
             $loginUser = new LoginUser();
+            require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/diagnostics.php');
+            $diagnostics = new ATQuimicosDiagnostics();
 
             $myUpdateChecker = PucFactory::buildUpdateChecker(
                 'https://github.com/mager19/atquimicosReport/',
@@ -75,6 +78,33 @@ if (!class_exists('ATQuimicosReports')) {
 
             //Set the branch that contains the stable release.
             $myUpdateChecker->setBranch('releases');
+        }
+
+        public function verify_pages_configuration()
+        {
+            // Verificar que todas las páginas del plugin existan
+            $pages_to_check = array(
+                'atquimicos_reporte_page_id' => 'Reportes',
+                'atquimicos_login_page_id' => 'Login ATQuimicos Clientes',
+                'atquimicos_reports_page_id' => 'Crear Reporte',
+                'atquimicos_sede_page_id' => 'Crear Sede'
+            );
+
+            $pages_missing = false;
+
+            foreach ($pages_to_check as $option_name => $page_title) {
+                $page_id = get_option($option_name);
+
+                if (!$page_id || get_post_status($page_id) !== 'publish') {
+                    $pages_missing = true;
+                    break;
+                }
+            }
+
+            // Si hay páginas faltantes, recrearlas
+            if ($pages_missing) {
+                ATReports\utils\ATQuimicosReportsCreatePage::create_page();
+            }
         }
 
         public function initialize_acf_form()
@@ -158,6 +188,29 @@ if (!class_exists('ATQuimicosReports')) {
 
             add_action('wp_ajax_filter_reports', 'filter_reports');
             add_action('wp_ajax_nopriv_filter_reports', 'filter_reports');
+
+            // Agregar acción AJAX para verificar estado de login
+            add_action('wp_ajax_check_login_status', 'check_login_status');
+            add_action('wp_ajax_nopriv_check_login_status', 'check_login_status');
+
+            function check_login_status()
+            {
+                $response = array(
+                    'logged_in' => is_user_logged_in(),
+                    'redirect_url' => ''
+                );
+
+                if (is_user_logged_in()) {
+                    $current_user = wp_get_current_user();
+                    if (in_array('cliente', $current_user->roles) || in_array('administrator', $current_user->roles)) {
+                        // Crear instancia temporal de LoginUser para obtener URL
+                        $login_user = new LoginUser();
+                        $response['redirect_url'] = $login_user->get_user_reports_url($current_user->ID);
+                    }
+                }
+
+                wp_send_json($response);
+            }
 
             function filter_reports()
             {
