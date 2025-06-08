@@ -152,10 +152,14 @@
 
 .container__atquimicos__report {
 	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-	min-height: 100vh;
 	padding: 2rem;
 	color: var(--txt);
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Clase específica para la página completa de reportes */
+.reports-page {
+	min-height: 100vh;
 }
 
 /* Header de la página */

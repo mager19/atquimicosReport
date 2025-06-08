@@ -1,4 +1,4 @@
-<div class="container__atquimicos__report">
+<div class="container__atquimicos__report reports-page">
     <?php
     if (!is_user_logged_in()) {
         echo '<p>Debes iniciar sesión para ver este contenido.</p>';
