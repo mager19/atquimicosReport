@@ -169,6 +169,7 @@
 }
 
 .reports-header h1 {
+	color: #fff;
 	margin: 0;
 	font-size: 2.5rem;
 	font-weight: 700;
@@ -266,6 +267,7 @@
 }
 
 .reports-content-header h2 {
+	color: #fff;
 	margin: 0;
 	font-size: 1.5rem;
 	font-weight: 600;
@@ -280,6 +282,7 @@
 }
 
 #reports-container {
+	color: #fff;
 	padding: 2rem;
 	min-height: 300px;
 }
