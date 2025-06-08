@@ -2,6 +2,12 @@
 	--color-gray: #e5e5e5;
 	--color-sucess: #32bf84;
 	--color-charcoal: #343837;
+	--primary: #da4540;
+	--secondary: #f56549;
+	--dark-1: #202b4b;
+	--dark-2: #333333;
+	--dark-3: #333333;
+	--txt: #21232f;
 }
 
 .userForm {
@@ -140,17 +146,308 @@
 	text-transform: capitalize;
 }
 
+/* ============================================
+   ESTILOS ESPECÍFICOS PARA PÁGINA DE REPORTES
+   ============================================ */
+
 .container__atquimicos__report {
-	background-color: #f5f5f5;
-	color: var(--color-charcoal);
-	padding: 1rem 1rem;
-	@media (min-width: 768px) {
-		padding: 1rem 2rem;
+	background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+	min-height: 100vh;
+	padding: 2rem;
+	color: var(--txt);
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Header de la página */
+.reports-header {
+	background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+	color: white;
+	padding: 2rem;
+	border-radius: 12px;
+	margin-bottom: 2rem;
+	box-shadow: 0 8px 32px rgba(218, 69, 64, 0.2);
+}
+
+.reports-header h1 {
+	margin: 0;
+	font-size: 2.5rem;
+	font-weight: 700;
+	text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.reports-header p {
+	margin: 0.5rem 0 0 0;
+	opacity: 0.9;
+	font-size: 1.1rem;
+}
+
+/* Contenedor de filtros */
+.filters-container {
+	background: white;
+	padding: 2rem;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	margin-bottom: 2rem;
+	border: 1px solid rgba(218, 69, 64, 0.1);
+}
+
+.filters-container h3 {
+	color: var(--dark-1);
+	margin: 0 0 1.5rem 0;
+	font-size: 1.3rem;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.filters-container h3::before {
+	content: "🔍";
+	font-size: 1.2rem;
+}
+
+#filter-form {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 1.5rem;
+	align-items: end;
+}
+
+.filter-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.filter-group label {
+	color: var(--dark-1);
+	font-weight: 600;
+	font-size: 0.9rem;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.filter-group select {
+	padding: 0.75rem 1rem;
+	border: 2px solid #e9ecef;
+	border-radius: 8px;
+	background: white;
+	color: var(--txt);
+	font-size: 1rem;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.filter-group select:focus {
+	outline: none;
+	border-color: var(--primary);
+	box-shadow: 0 0 0 3px rgba(218, 69, 64, 0.1);
+	transform: translateY(-1px);
+}
+
+.filter-group select:hover {
+	border-color: var(--secondary);
+}
+
+/* Contenedor de reportes */
+.reports-content {
+	background: white;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+	border: 1px solid rgba(218, 69, 64, 0.1);
+}
+
+.reports-content-header {
+	background: linear-gradient(135deg, var(--dark-1) 0%, var(--dark-2) 100%);
+	color: white;
+	padding: 1.5rem 2rem;
+	border-bottom: 3px solid var(--primary);
+}
+
+.reports-content-header h2 {
+	margin: 0;
+	font-size: 1.5rem;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.reports-content-header h2::before {
+	content: "📋";
+	font-size: 1.3rem;
+}
+
+#reports-container {
+	padding: 2rem;
+	min-height: 300px;
+}
+
+/* Estilos para los grupos de reportes por mes */
+#reports-container h2 {
+	color: var(--primary);
+	font-size: 1.4rem;
+	font-weight: 700;
+	margin: 2rem 0 1rem 0;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid rgba(218, 69, 64, 0.2);
+	position: relative;
+}
+
+#reports-container h2:first-child {
+	margin-top: 0;
+}
+
+#reports-container h2::before {
+	content: "📅";
+	margin-right: 0.5rem;
+}
+
+/* Lista de reportes */
+#reports-container ul {
+	list-style: none;
+	padding: 0;
+	margin: 0 0 1.5rem 0;
+}
+
+#reports-container li {
+	background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+	margin-bottom: 0.75rem;
+	border-radius: 8px;
+	border: 1px solid #e9ecef;
+	transition: all 0.3s ease;
+	overflow: hidden;
+}
+
+#reports-container li:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 8px 25px rgba(218, 69, 64, 0.15);
+	border-color: var(--secondary);
+}
+
+#reports-container li a {
+	display: block;
+	padding: 1rem 1.5rem;
+	color: var(--txt);
+	text-decoration: none;
+	font-weight: 500;
+	position: relative;
+	transition: all 0.3s ease;
+}
+
+#reports-container li a::before {
+	content: "📄";
+	margin-right: 0.75rem;
+	font-size: 1.1rem;
+}
+
+#reports-container li a::after {
+	content: "→";
+	position: absolute;
+	right: 1.5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0;
+	transition: all 0.3s ease;
+	color: var(--primary);
+	font-weight: bold;
+}
+
+#reports-container li:hover a::after {
+	opacity: 1;
+	right: 1rem;
+}
+
+#reports-container li a:hover {
+	color: var(--primary);
+	padding-left: 2rem;
+}
+
+/* Estado de carga */
+.loading-state {
+	text-align: center;
+	padding: 3rem;
+	color: var(--dark-2);
+}
+
+.loading-state::before {
+	content: "⏳";
+	font-size: 2rem;
+	display: block;
+	margin-bottom: 1rem;
+}
+
+/* Estado vacío */
+.empty-state {
+	text-align: center;
+	padding: 3rem;
+	color: var(--dark-2);
+}
+
+.empty-state::before {
+	content: "📭";
+	font-size: 3rem;
+	display: block;
+	margin-bottom: 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+	.container__atquimicos__report {
+		padding: 1rem;
 	}
 
-	padding-bottom: 3rem;
-
-	span {
-		font-weight: bold;
+	.reports-header {
+		padding: 1.5rem;
 	}
+
+	.reports-header h1 {
+		font-size: 2rem;
+	}
+
+	.filters-container {
+		padding: 1.5rem;
+	}
+
+	#filter-form {
+		grid-template-columns: 1fr;
+		gap: 1rem;
+	}
+
+	.reports-content-header {
+		padding: 1rem 1.5rem;
+	}
+
+	#reports-container {
+		padding: 1.5rem;
+	}
+}
+
+/* Animaciones sutiles */
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.container__atquimicos__report > * {
+	animation: fadeInUp 0.6s ease forwards;
+}
+
+.container__atquimicos__report > *:nth-child(2) {
+	animation-delay: 0.1s;
+}
+
+.container__atquimicos__report > *:nth-child(3) {
+	animation-delay: 0.2s;
+}
+
+.container__atquimicos__report > *:nth-child(4) {
+	animation-delay: 0.3s;
 }

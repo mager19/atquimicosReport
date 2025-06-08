@@ -40,6 +40,8 @@ if (!class_exists('LoginUser')) {
             exit;
         }
 
+        // todo: logout redirect
+
         private function get_user_reports_url($user_id = null)
         {
             $user_id = $user_id ? $user_id : get_current_user_id();

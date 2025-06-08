@@ -155,6 +155,113 @@ if (!class_exists('ATQuimicosReports')) {
             );
 
             wp_localize_script('acf-dynamic-sedes', 'atquimicos_ajax', array('ajaxurl' => admin_url('admin-ajax.php')));
+
+            add_action('wp_ajax_filter_reports', 'filter_reports');
+            add_action('wp_ajax_nopriv_filter_reports', 'filter_reports');
+
+            function filter_reports()
+            {
+                // Verificar nonce para seguridad
+                if (!wp_verify_nonce($_POST['nonce'], 'filter_reports_nonce')) {
+                    wp_die('Error de seguridad: Nonce inválido');
+                }
+
+                $year = sanitize_text_field($_POST['year']);
+                $month = sanitize_text_field($_POST['month']);
+                $sede = isset($_POST['sede']) ? intval($_POST['sede']) : 0;
+                $user_id = isset($_POST['user_id']) ? intval($_POST['user_id']) : 0;
+
+                $current_user = wp_get_current_user();
+
+                // Verificar que el usuario esté logueado y sea cliente
+                if (!is_user_logged_in() || !in_array('cliente', $current_user->roles)) {
+                    wp_die('Acceso no autorizado');
+                }
+
+                // Determinar qué user_id usar para la consulta
+                $target_user_id = $current_user->ID; // Por defecto, usar el usuario actual
+
+                // Si se proporciona un user_id diferente, verificar permisos
+                if ($user_id && $user_id !== $current_user->ID) {
+                    if (current_user_can('manage_options')) {
+                        $target_user_id = $user_id; // Admin puede ver reportes de otros
+                    }
+                    // Si no es admin, mantener el user_id actual
+                }
+
+                $args = array(
+                    'post_type' => 'atquimicosreports',
+                    'posts_per_page' => -1,
+                    'meta_query' => array(
+                        'relation' => 'AND',
+                        array(
+                            'key' => 'cliente',
+                            'value' => $target_user_id,
+                            'compare' => '='
+                        )
+                    ),
+                    'orderby' => 'post_date',
+                    'order'   => 'DESC',
+                );
+
+                // Agregar filtro por sede si se especifica
+                if (!empty($sede)) {
+                    $args['meta_query'][] = array(
+                        'key' => 'sedes',
+                        'value' => '"' . $sede . '"',
+                        'compare' => 'LIKE'
+                    );
+                }
+
+                if (!empty($year) && !empty($month)) {
+                    $args['date_query'] = array(
+                        array(
+                            'year' => intval($year),
+                            'month' => intval($month)
+                        )
+                    );
+                } elseif (!empty($year)) {
+                    $args['date_query'] = array(
+                        array(
+                            'year' => intval($year)
+                        )
+                    );
+                } elseif (!empty($month)) {
+                    $args['date_query'] = array(
+                        array(
+                            'month' => intval($month)
+                        )
+                    );
+                }
+
+                $reports = new WP_Query($args);
+
+                if ($reports->have_posts()) :
+                    $grouped_reports = [];
+
+                    while ($reports->have_posts()) : $reports->the_post();
+                        $month = get_the_date('F Y');
+                        $grouped_reports[$month][] = [
+                            'title' => get_the_title(),
+                            'link'  => get_permalink(),
+                        ];
+                    endwhile;
+
+                    foreach ($grouped_reports as $month => $reports) :
+                        echo "<h2>" . esc_html($month) . "</h2>";
+                        echo "<ul>";
+                        foreach ($reports as $report) :
+                            echo "<li><a href='" . esc_url($report['link']) . "' target='_blank'>" . esc_html($report['title']) . "</a></li>";
+                        endforeach;
+                        echo "</ul>";
+                    endforeach;
+                else :
+                    echo '<p>No se encontraron reportes para los filtros seleccionados.</p>';
+                endif;
+
+                wp_reset_postdata();
+                wp_die();
+            }
         }
     }
 }
