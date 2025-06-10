@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Template para mostrar una sede individual
+ * Este template se carga mediante template_include hook
+ */
+
+get_header();
+
 // Asegurar que tenemos el ID del post actual
 global $post;
 $post_id = null;
@@ -28,6 +36,7 @@ if (!$post_id || $post_id <= 0) {
     echo '<div class="container__atquimicos__report">';
     echo '<p><strong>Error:</strong> No se pudo obtener el ID de la sede. Por favor, verifica la URL.</p>';
     echo '</div>';
+    get_footer();
     return;
 }
 
@@ -47,3 +56,5 @@ $contacto = get_field('contacto_en_la_sede', $post_id);
     <p><span>Cliente: </span><?php echo ($cliente && isset($cliente->display_name)) ? esc_html($cliente->display_name) : 'No disponible'; ?></p>
     <p><span>Contacto en la sede: </span><?php echo $contacto ? esc_html($contacto) : 'No disponible'; ?></p>
 </div>
+
+<?php get_footer(); ?>

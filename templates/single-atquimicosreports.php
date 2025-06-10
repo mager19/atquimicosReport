@@ -1,4 +1,12 @@
 <?php
+
+/**
+ * Template para mostrar un reporte individual
+ * Este template se carga mediante template_include hook
+ */
+
+get_header();
+
 // Asegurar que tenemos el ID del post actual
 global $post;
 $post_id = null;
@@ -31,20 +39,23 @@ if (!$post_id && is_singular()) {
     }
 }
 
-// Debug: mostrar el ID en desarrollo (COMENTAR EN PRODUCCIÓN)
+// Debug: mostrar el ID en desarrollo (COMENTADO PARA PRODUCCIÓN)
+// echo "<!-- TEMPLATE DEBUG INFO -->";
 // echo "<!-- Post ID: " . $post_id . " -->";
 // echo "<!-- Post Object: " . ($post ? 'Available' : 'Not Available') . " -->";
 // echo "<!-- Global Post ID: " . (isset($GLOBALS['post']->ID) ? $GLOBALS['post']->ID : 'Not Set') . " -->";
 // echo "<!-- Queried Object ID: " . get_queried_object_id() . " -->";
 // echo "<!-- Is Singular: " . (is_singular('atquimicosreports') ? 'Yes' : 'No') . " -->";
+// echo "<!-- Template Include Method: ACTIVE -->";
 
-// Para debug temporal en desarrollo, descomenta las líneas de arriba
+// Debug output desactivado para producción
 
 // Verificar que tenemos un ID válido
 if (!$post_id || $post_id <= 0) {
     echo '<div class="container__atquimicos__report">';
     echo '<p><strong>Error:</strong> No se pudo obtener el ID del reporte. Por favor, verifica la URL.</p>';
     echo '</div>';
+    get_footer();
     return;
 }
 
@@ -132,28 +143,28 @@ $type = get_field('tipo', $post_id);
     } else {
         echo '<p>No hay variables disponibles para este reporte.</p>';
 
-        // Debug: información adicional (COMENTAR EN PRODUCCIÓN)
-        /*
-        echo '<!-- Debug Info: -->';
-        echo '<!-- Post ID: ' . $post_id . ' -->';
-        echo '<!-- Type: ' . ($type ? $type : 'NULL') . ' -->';
-        echo '<!-- Variables found: ' . ($variables ? 'Yes' : 'No') . ' -->';
-        echo '<!-- Variables type: ' . gettype($variables) . ' -->';
-        if (is_array($variables)) {
-            echo '<!-- Variables count: ' . count($variables) . ' -->';
-        }
-        */
+        // Debug desactivado para producción
+        // echo '<!-- DEBUG INFO: -->';
+        // echo '<!-- Post ID: ' . $post_id . ' -->';
+        // echo '<!-- Type: ' . ($type ? $type : 'NULL') . ' -->';
+        // echo '<!-- Variables found: ' . ($variables ? 'Yes' : 'No') . ' -->';
+        // echo '<!-- Variables type: ' . gettype($variables) . ' -->';
+        // if (is_array($variables)) {
+        //     echo '<!-- Variables count: ' . count($variables) . ' -->';
+        // }
 
-        if (!$post_id) {
-            echo '<p><em>Error: No se pudo obtener el ID del post.</em></p>';
-        } elseif (!$type) {
-            echo '<p><em>Error: No se pudo determinar el tipo de reporte.</em></p>';
-        } else {
-            echo '<p><em>Tipo de reporte: ' . esc_html($type) . '</em></p>';
-        }
+        // if (!$post_id) {
+        //     echo '<p><em>Error: No se pudo obtener el ID del post.</em></p>';
+        // } elseif (!$type) {
+        //     echo '<p><em>Error: No se pudo determinar el tipo de reporte.</em></p>';
+        // } else {
+        //     echo '<p><em>Tipo de reporte: ' . esc_html($type) . '</em></p>';
+        // }
     }
 
 
 
     ?>
 </div>
+
+<?php get_footer(); ?>

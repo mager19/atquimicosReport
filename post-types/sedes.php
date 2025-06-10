@@ -7,7 +7,9 @@ if (!class_exists('ATQuimicosSedesCPT')) {
             require_once(ATQUIMICOS_REPORTS_PATH . 'fields/sedesFields.php');
             add_action('init', array($this, 'create_post_type'));
             add_filter('use_block_editor_for_post_type', array($this, 'disable_gutenberg_for_atquimicosclients'), 10, 2);
-            add_filter('the_content', array($this, 'load_custom_template'));
+
+            // Usar template_include en lugar de the_content para mejor control de templates
+            add_filter('template_include', array($this, 'load_custom_template'));
         }
 
         public function create_post_type()
@@ -79,32 +81,17 @@ if (!class_exists('ATQuimicosSedesCPT')) {
             return $field;
         }
 
-        public function load_custom_template($content)
+        public function load_custom_template($template)
         {
             if (is_singular('atquimicossedes')) {
-                global $post;
+                $custom_template = ATQUIMICOS_REPORTS_PATH . 'templates/single-atquimicossedes.php';
 
-                // Asegurar que el post esté disponible
-                if (!$post) {
-                    $post = get_post();
+                if (file_exists($custom_template)) {
+                    return $custom_template;
                 }
-
-                // Establecer el post como el post actual
-                if ($post) {
-                    setup_postdata($post);
-                }
-
-                ob_start();
-                require_once ATQUIMICOS_REPORTS_PATH . 'templates/single-atquimicossedes.php';
-                $template_content = ob_get_clean();
-
-                // Resetear postdata después de usar el template
-                wp_reset_postdata();
-
-                return $template_content;
             }
 
-            return $content; // Retorna el template original si no es el del CPT
+            return $template; // Retorna el template original si no es el del CPT
         }
     }
 }
