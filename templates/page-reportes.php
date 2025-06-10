@@ -7,10 +7,10 @@
 
     $current_user = wp_get_current_user();
 
-    if (!in_array('cliente', $current_user->roles)) {
-        echo "<p>Esta acción solo está disponible para clientes. Si usted es administrador o cliente puede usar.</p>";
-        return;
-    }
+    // if (!in_array('cliente', $current_user->roles)) {
+    //     echo "<p>Esta acción solo está disponible para clientes. Si usted es administrador o cliente puede usar.</p>";
+    //     return;
+    // }
 
     // Verificar si hay un user_id en la URL (para administradores que ven reportes de otros clientes)
     $target_user_id = isset($_GET['user_id']) ? intval($_GET['user_id']) : $current_user->ID;
