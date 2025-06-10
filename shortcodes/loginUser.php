@@ -47,12 +47,12 @@ if (!class_exists('LoginUser')) {
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
-                        // Fallback con JavaScript si la redirección del servidor falla
                         const form = document.querySelector('.userForm');
                         if (form) {
                             form.addEventListener('submit', function() {
                                 // Guardar URL de redirección en localStorage como backup
                                 localStorage.setItem('atquimicos_redirect_url', '<?php echo esc_js($redirect_to); ?>');
+                                localStorage.setItem('atquimicos_login_attempt', 'true');
                             });
                         }
 
@@ -60,25 +60,39 @@ if (!class_exists('LoginUser')) {
                         if (localStorage.getItem('atquimicos_login_attempt') === 'true') {
                             localStorage.removeItem('atquimicos_login_attempt');
 
-                            // Si estamos en la página de login pero el usuario está logueado, redirigir
-                            fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/x-www-form-urlencoded',
-                                    },
-                                    body: 'action=check_login_status'
-                                }).then(response => response.json())
-                                .then(data => {
-                                    if (data.logged_in && data.redirect_url) {
-                                        window.location.href = data.redirect_url;
-                                    }
-                                });
+                            // Verificar estado de login con timeout más largo para hosting lento
+                            setTimeout(function() {
+                                fetch('<?php echo admin_url('admin-ajax.php'); ?>', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/x-www-form-urlencoded',
+                                        },
+                                        body: 'action=check_login_status'
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.logged_in && data.redirect_url) {
+                                            window.location.href = data.redirect_url;
+                                        } else {
+                                            // Usar URL de localStorage como fallback final
+                                            const fallbackUrl = localStorage.getItem('atquimicos_redirect_url');
+                                            if (fallbackUrl) {
+                                                localStorage.removeItem('atquimicos_redirect_url');
+                                                window.location.href = fallbackUrl;
+                                            }
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Error al verificar login:', error);
+                                        // Usar URL de localStorage como fallback
+                                        const fallbackUrl = localStorage.getItem('atquimicos_redirect_url');
+                                        if (fallbackUrl) {
+                                            localStorage.removeItem('atquimicos_redirect_url');
+                                            window.location.href = fallbackUrl;
+                                        }
+                                    });
+                            }, 1000); // Esperar 1 segundo para que el servidor procese el login
                         }
-                    });
-
-                    // Marcar que se está intentando hacer login
-                    document.querySelector('.userForm').addEventListener('submit', function() {
-                        localStorage.setItem('atquimicos_login_attempt', 'true');
                     });
                 </script>
             </div>
@@ -88,17 +102,21 @@ if (!class_exists('LoginUser')) {
 
         public function redirect_after_login($user_login, $user)
         {
-            // Log para debugging (solo en desarrollo)
-            if (WP_DEBUG) {
-                error_log("ATQuimicos Login - Usuario: {$user_login}, Roles: " . implode(', ', $user->roles));
-            }
+            // Log para debugging (habilitado en producción temporalmente)
+            error_log("ATQuimicos Login - Usuario: {$user_login}, Roles: " . implode(', ', $user->roles));
 
             // Verificar que el usuario tenga el rol de cliente
             if (!in_array('cliente', $user->roles) && !in_array('administrator', $user->roles)) {
-                if (WP_DEBUG) {
-                    error_log("ATQuimicos Login - Usuario sin permisos de cliente");
-                }
+                error_log("ATQuimicos Login - Usuario sin permisos de cliente");
                 return; // No redirigir si no es cliente o admin
+            }
+
+            // Verificar si ya se enviaron headers
+            if (headers_sent()) {
+                error_log("ATQuimicos Login - Headers ya enviados, usando JavaScript redirect");
+                // Usar JavaScript como fallback
+                echo '<script type="text/javascript">window.location.href="' . esc_js($this->get_user_reports_url($user->ID)) . '";</script>';
+                return;
             }
 
             // Obtener la URL de redirección del formulario
@@ -109,19 +127,21 @@ if (!class_exists('LoginUser')) {
                 $redirect_to = $this->get_user_reports_url($user->ID);
             }
 
-            if (WP_DEBUG) {
-                error_log("ATQuimicos Login - URL de redirección: {$redirect_to}");
-            }
+            error_log("ATQuimicos Login - URL de redirección: {$redirect_to}");
 
             // Verificar que la URL de redirección sea válida y dentro del sitio
             if ($this->is_valid_redirect_url($redirect_to)) {
-                // Usar wp_redirect en lugar de wp_safe_redirect para más control
-                wp_redirect($redirect_to);
+                // Limpiar cualquier output buffer antes de la redirección
+                while (ob_get_level()) {
+                    ob_end_clean();
+                }
+
+                // Usar wp_redirect con nocache_headers para evitar problemas de caché
+                nocache_headers();
+                wp_redirect($redirect_to, 302);
                 exit;
             } else {
-                if (WP_DEBUG) {
-                    error_log("ATQuimicos Login - URL de redirección inválida");
-                }
+                error_log("ATQuimicos Login - URL de redirección inválida");
             }
         }
 
@@ -171,8 +191,18 @@ if (!class_exists('LoginUser')) {
 
                 if (in_array('cliente', $current_user->roles) || in_array('administrator', $current_user->roles)) {
                     $redirect_url = $this->get_user_reports_url($current_user->ID);
-                    wp_redirect($redirect_url);
-                    exit;
+
+                    // Verificar si los headers ya fueron enviados
+                    if (!headers_sent()) {
+                        nocache_headers();
+                        wp_redirect($redirect_url, 302);
+                        exit;
+                    } else {
+                        // Usar JavaScript como fallback
+                        add_action('wp_footer', function () use ($redirect_url) {
+                            echo '<script type="text/javascript">window.location.href="' . esc_js($redirect_url) . '";</script>';
+                        });
+                    }
                 }
             }
         }

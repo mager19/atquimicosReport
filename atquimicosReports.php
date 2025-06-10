@@ -4,7 +4,7 @@
  * Plugin Name: AtquimicosReports
  * Plugin URI: https://www.wordpress.org/mv-translations
  * Description: Plugin generate client reports for Atquimicos
- * Version: 1.3
+ * Version: 1.3.1
  * Requires at least: 5.6
  * Requires PHP: 7.0
  * Author: Mario Reyes C
@@ -315,6 +315,21 @@ if (!class_exists('ATQuimicosReports')) {
                 wp_reset_postdata();
                 wp_die();
             }
+        }
+
+        public function load_dependencies()
+        {
+            // Debug temporal para producción
+            if (file_exists(ATQUIMICOS_REPORTS_PATH . 'debug-redirect.php')) {
+                require_once(ATQUIMICOS_REPORTS_PATH . 'debug-redirect.php');
+            }
+
+            // Configuraciones específicas para producción
+            if (file_exists(ATQUIMICOS_REPORTS_PATH . 'production-config.php')) {
+                require_once(ATQUIMICOS_REPORTS_PATH . 'production-config.php');
+            }
+
+            // ...existing code...
         }
     }
 }
