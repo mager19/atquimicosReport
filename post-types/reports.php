@@ -48,11 +48,26 @@ if (!class_exists('ATQuimicosReportsCPT')) {
         public function load_custom_template($content)
         {
             if (is_singular('atquimicosreports')) {
+                global $post;
+
+                // Asegurar que el post esté disponible
+                if (!$post) {
+                    $post = get_post();
+                }
+
+                // Establecer el post como el post actual
+                if ($post) {
+                    setup_postdata($post);
+                }
 
                 ob_start();
                 require_once ATQUIMICOS_REPORTS_PATH . 'templates/single-atquimicosreports.php';
+                $template_content = ob_get_clean();
 
-                return ob_get_clean();
+                // Resetear postdata después de usar el template
+                wp_reset_postdata();
+
+                return $template_content;
             }
 
             return $content; // Retorna el template original si no es el del CPT
