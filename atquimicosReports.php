@@ -4,7 +4,7 @@
  * Plugin Name: AtquimicosReports
  * Plugin URI: https://www.wordpress.org/mv-translations
  * Description: Plugin generate client reports for Atquimicos
- * Version: 1.1.2
+ * Version: 1.1.3
  * Requires at least: 5.6
  * Requires PHP: 7.0
  * Author: Mario Reyes C
@@ -51,6 +51,7 @@ if (!class_exists('ATQuimicosReports')) {
             $this->define_constants();
             add_action('init', array($this, 'enqueue_scripts'));
             add_action('admin_init', array($this, 'verify_pages_configuration'));
+            add_action('wp', array($this, 'initialize_acf_form')); // Agregar hook para ACF
 
             // posttypes
             require_once(ATQUIMICOS_REPORTS_PATH . 'post-types/reports.php');
@@ -109,8 +110,23 @@ if (!class_exists('ATQuimicosReports')) {
 
         public function initialize_acf_form()
         {
+            // Verificar que estemos en una página y que ACF esté disponible
+            if (!is_page() || !function_exists('acf_form_head')) {
+                return;
+            }
+
+            global $post;
+            if (!$post || !isset($post->post_content)) {
+                return;
+            }
+
             // Solo ejecuta acf_form_head en páginas donde se usa el shortcode
-            if (is_page() && has_shortcode(get_post()->post_content, 'acf_form_sedes')) {
+            $content = $post->post_content;
+            if (
+                has_shortcode($content, 'acf_form_sedes') ||
+                has_shortcode($content, 'acf_form_sede') ||
+                has_shortcode($content, 'acf_form_report')
+            ) {
                 acf_form_head();
             }
         }
@@ -182,6 +198,15 @@ if (!class_exists('ATQuimicosReports')) {
                 array(),
                 ATQUIMICOS_REPORTS_VERSION,
                 'all'
+            );
+
+            // Encolar JavaScript para funcionalidad de mensajes y formularios
+            wp_enqueue_script(
+                'atquimicos-scripts',
+                ATQUIMICOS_REPORTS_URL . 'assets/js/sedes.js',
+                array('jquery'),
+                ATQUIMICOS_REPORTS_VERSION,
+                true
             );
 
             wp_localize_script('acf-dynamic-sedes', 'atquimicos_ajax', array('ajaxurl' => admin_url('admin-ajax.php')));

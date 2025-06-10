@@ -53,13 +53,36 @@ if (!class_exists('AddSede')) {
         public function message($content)
         {
             if (isset($_GET['sede']) && $_GET['sede'] === 'new') {
+                $message = '<div class="container__atquimicos__report"><div class="atquimicos__notice">¡La sede se ha creado exitosamente!</div></div>';
 
-                $message = '<div class="atquimicos__notice">¡El reporte se ha creado exitosamente!</div>';
-                // Concatenar el mensaje al contenido de la página
+                // Si ya estamos en una página con el contenedor, no duplicar
+                if (strpos($content, 'container__atquimicos__report') !== false) {
+                    $message = '<div class="atquimicos__notice">¡La sede se ha creado exitosamente!</div>';
+                    // Insertar el mensaje después del primer div container
+                    $content = str_replace(
+                        '<div class="container__atquimicos__report',
+                        '<div class="container__atquimicos__report" data-message="success',
+                        $content
+                    );
+                    $content = str_replace(
+                        'data-message="success"',
+                        '">' . $message,
+                        $content
+                    );
+                    return $content;
+                }
+
+                // Si no hay contenedor, agregar uno
                 return $message . $content;
             }
 
             return $content;
+        }
+
+        public function redirect_to_single_sede($url)
+        {
+            // Mantener la URL original, que ya incluye el parámetro ?sede=new
+            return $url;
         }
     }
 }

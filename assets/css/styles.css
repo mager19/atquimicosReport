@@ -105,10 +105,100 @@
 }
 
 .atquimicos__notice {
-	background-color: var(--color-sucess);
-	padding: 0.5rem 1rem;
-	margin-bottom: 2rem !important;
+	background: linear-gradient(135deg, var(--color-sucess) 0%, #28a745 100%);
+	color: white;
+	padding: 1rem 1.5rem;
+	margin: 1rem 0 2rem 0 !important;
 	text-align: center;
+	border-radius: 8px;
+	box-shadow: 0 4px 15px rgba(50, 191, 132, 0.3);
+	font-weight: 600;
+	font-size: 1.1rem;
+	border: none;
+	position: relative;
+	overflow: hidden;
+	animation: slideInFromTop 0.5s ease-out;
+	cursor: pointer;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.atquimicos__notice:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(50, 191, 132, 0.4);
+}
+
+.atquimicos__notice::before {
+	content: "✅";
+	margin-right: 0.5rem;
+	font-size: 1.2rem;
+}
+
+.atquimicos__notice::after {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+	animation: shimmer 2s infinite;
+}
+
+@keyframes slideInFromTop {
+	from {
+		opacity: 0;
+		transform: translateY(-20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		left: -100%;
+	}
+	100% {
+		left: 100%;
+	}
+}
+
+/* Estilos específicos para el mensaje dentro del contenedor de reportes */
+.container__atquimicos__report .atquimicos__notice {
+	margin: 0 0 2rem 0 !important;
+	max-width: 100%;
+	z-index: 10;
+}
+
+/* Asegurar que el mensaje no interfiera con el layout del formulario */
+.acf-form .atquimicos__notice {
+	margin-bottom: 1.5rem !important;
+}
+
+/* Estilos responsive para el mensaje */
+@media (max-width: 768px) {
+	.atquimicos__notice {
+		padding: 0.75rem 1rem;
+		font-size: 1rem;
+		margin: 0.5rem 0 1.5rem 0 !important;
+	}
+}
+
+/* Animación de fade out para auto-hide */
+.atquimicos__notice.fade-out {
+	animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+		transform: translateY(0);
+	}
+	to {
+		opacity: 0;
+		transform: translateY(-10px);
+	}
 }
 
 .table_component {
