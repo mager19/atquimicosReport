@@ -4,7 +4,7 @@
  * Plugin Name: AtquimicosReports
  * Plugin URI: https://www.wordpress.org/mv-translations
  * Description: Plugin generate client reports for Atquimicos
- * Version: 1.1.8
+ * Version: 1.2.0
  * Requires at least: 5.6
  * Requires PHP: 7.0
  * Author: Mario Reyes C
@@ -73,6 +73,8 @@ if (!class_exists('ATQuimicosReports')) {
             $registerUser = new RegisterUser();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/loginUser.php');
             $loginUser = new LoginUser();
+            require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/loginTechnician.php');
+            $loginTechnician = new LoginTechnician();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/diagnostics.php');
             $diagnostics = new ATQuimicosDiagnostics();
 
@@ -95,6 +97,7 @@ if (!class_exists('ATQuimicosReports')) {
             $pages_to_check = array(
                 'atquimicos_reporte_page_id' => 'Reportes',
                 'atquimicos_login_page_id' => 'Login ATQuimicos Clientes',
+                'atquimicos_technician_login_page_id' => 'Login ATQuimicos Técnicos',
                 'atquimicos_reports_page_id' => 'Crear Reporte',
                 'atquimicos_sede_page_id' => 'Crear Sede'
             );
@@ -226,6 +229,10 @@ if (!class_exists('ATQuimicosReports')) {
             add_action('wp_ajax_check_login_status', 'check_login_status');
             add_action('wp_ajax_nopriv_check_login_status', 'check_login_status');
 
+            // Agregar acción AJAX para verificar estado de login de técnicos
+            add_action('wp_ajax_check_technician_login_status', 'check_technician_login_status');
+            add_action('wp_ajax_nopriv_check_technician_login_status', 'check_technician_login_status');
+
             function check_login_status()
             {
                 $response = array(
@@ -239,6 +246,25 @@ if (!class_exists('ATQuimicosReports')) {
                         // Crear instancia temporal de LoginUser para obtener URL
                         $login_user = new LoginUser();
                         $response['redirect_url'] = $login_user->get_user_reports_url($current_user->ID);
+                    }
+                }
+
+                wp_send_json($response);
+            }
+
+            function check_technician_login_status()
+            {
+                $response = array(
+                    'logged_in' => is_user_logged_in(),
+                    'is_technician' => false,
+                    'redirect_url' => ''
+                );
+
+                if (is_user_logged_in()) {
+                    $current_user = wp_get_current_user();
+                    if (in_array('tecnico', $current_user->roles) || in_array('administrator', $current_user->roles)) {
+                        $response['is_technician'] = true;
+                        $response['redirect_url'] = home_url('/crear-reporte/');
                     }
                 }
 

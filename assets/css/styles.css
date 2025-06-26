@@ -628,3 +628,100 @@
 .recomendaciones p {
 	margin-bottom: 0;
 }
+
+.container__atquimicos__report__form {
+	max-width: 400px;
+	margin: 50px auto;
+	padding: 30px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.container__atquimicos__report__form h2 {
+	text-align: center;
+	margin-bottom: 30px;
+	color: #333;
+}
+
+.userForm {
+	margin-bottom: 20px;
+}
+
+.userForm label {
+	display: block;
+	margin-bottom: 5px;
+	font-weight: bold;
+	color: #555;
+}
+
+.userForm input[type="text"],
+.userForm input[type="password"] {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 16px;
+	box-sizing: border-box;
+}
+
+.login-button {
+	width: 100%;
+	padding: 12px;
+	background-color: #0073aa;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.login-button:hover {
+	background-color: #005a87;
+}
+
+.error-message {
+	padding: 10px;
+	background-color: #ffeaea;
+	border: 1px solid #ff6b6b;
+	border-radius: 4px;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.success-message {
+	padding: 15px;
+	background-color: #e8f5e8;
+	border: 1px solid #4caf50;
+	border-radius: 4px;
+	text-align: center;
+	margin-bottom: 20px;
+	color: #2e7d32;
+}
+
+.warning-message {
+	padding: 15px;
+	background-color: #fff3cd;
+	border: 1px solid #ffc107;
+	border-radius: 4px;
+	text-align: center;
+	margin-bottom: 20px;
+	color: #856404;
+}
+
+.reports-link {
+	display: inline-block;
+	margin-top: 10px;
+	padding: 8px 16px;
+	background-color: #0073aa;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	transition: background-color 0.3s;
+}
+
+.reports-link:hover {
+	background-color: #005a87;
+	color: white;
+}
