@@ -1,5 +1,6 @@
 {
 	"name": "atquimicos/reports",
+	"description": "Plugin para generar reportes de ATQuímicos",
 	"autoload": {
 		"psr-4": {
 			"Atquimicos\\Reports\\": "src/"
@@ -11,5 +12,9 @@
 			"email": "mager19@gmail.com"
 		}
 	],
-	"require": {}
+	"require": {
+		"php": ">=7.0",
+		"tecnickcom/tcpdf": "^6.6",
+		"dompdf/dompdf": "^2.0"
+	}
 }

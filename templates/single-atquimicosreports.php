@@ -75,11 +75,23 @@ $type = get_field('tipo', $post_id);
         return;
     }
     ?>
-    <h3>Informe: <?php the_title(); ?></h3>
+    <div class="report-header">
+        <h3>Informe: <?php the_title(); ?></h3>
+        <div class="report-actions">
+            <a href="<?php echo esc_url(add_query_arg(array('action' => 'generate_pdf', 'report_id' => $post_id), admin_url('admin-ajax.php'))); ?>"
+                class="btn-download-pdf" target="_blank">
+                <span class="dashicons dashicons-download"></span>
+                Descargar PDF
+            </a>
+            <small style="display: block; margin-top: 5px; color: #666; font-size: 11px;">
+                Genera un archivo PDF del reporte para guardar o imprimir
+            </small>
+        </div>
+    </div>
 
     <p><span>Fecha: </span><?php echo $fecha ? esc_html($fecha) : 'No disponible'; ?></p>
 
-    <div class="tecnico-info">
+    <div class=" tecnico-info">
         <p><span>Técnico ATQuimicos: </span><?php echo ($tecnico && isset($tecnico['display_name'])) ? esc_html($tecnico['display_name']) : 'No disponible'; ?></p>
         <?php
 

@@ -4,7 +4,7 @@
  * Plugin Name: AtquimicosReports
  * Plugin URI: https://www.wordpress.org/mv-translations
  * Description: Plugin generate client reports for Atquimicos
- * Version: 1.1.6
+ * Version: 1.1.7
  * Requires at least: 5.6
  * Requires PHP: 7.0
  * Author: Mario Reyes C
@@ -41,6 +41,11 @@ require_once('utils/createPage.php');
 
 use ATReports\utils;
 
+// Cargar Composer autoloader si está disponible
+if (file_exists(__DIR__ . '/vendor/autoload.php')) {
+    require_once __DIR__ . '/vendor/autoload.php';
+}
+
 if (!class_exists('ATQuimicosReports')) {
     class ATQuimicosReports
     {
@@ -70,6 +75,9 @@ if (!class_exists('ATQuimicosReports')) {
             $loginUser = new LoginUser();
             require_once(ATQUIMICOS_REPORTS_PATH . 'shortcodes/diagnostics.php');
             $diagnostics = new ATQuimicosDiagnostics();
+
+            // PDF Generator
+            require_once(ATQUIMICOS_REPORTS_PATH . 'includes/pdf-generator.php');
 
             $myUpdateChecker = PucFactory::buildUpdateChecker(
                 'https://github.com/mager19/atquimicosReport/',
