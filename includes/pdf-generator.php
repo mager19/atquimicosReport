@@ -42,6 +42,7 @@ class ATQuimicos_PDF_Generator
         $tecnico = get_field('tecnico_atquimicos', $report_id);
         $cliente = get_field('cliente', $report_id);
         $type = get_field('tipo', $report_id);
+        $recomendaciones = get_field('recomendaciones', $report_id);
 
         // Obtener variables según el tipo
         if ($type && $type === 'caldera') {
@@ -74,13 +75,13 @@ class ATQuimicos_PDF_Generator
         }
 
         // Generar el HTML del reporte
-        $html = $this->generate_report_html($post, $fecha, $tecnico, $cliente, $variables, $parametros_fijos);
+        $html = $this->generate_report_html($post, $fecha, $tecnico, $cliente, $variables, $parametros_fijos, $recomendaciones);
 
         // Usar TCPDF para generar el PDF
         $this->create_pdf($html, $post->post_title);
     }
 
-    private function generate_report_html($post, $fecha, $tecnico, $cliente, $variables, $parametros_fijos)
+    private function generate_report_html($post, $fecha, $tecnico, $cliente, $variables, $parametros_fijos, $recomendaciones)
     {
         ob_start();
 ?>
@@ -276,6 +277,21 @@ class ATQuimicos_PDF_Generator
             <?php else: ?>
                 <p><em>No hay variables disponibles para este reporte.</em></p>
             <?php endif; ?>
+
+            <div class="recomendaciones">
+                <h3>Recomendaciones</h3>
+                <?php
+                if ($recomendaciones) { ?>
+                    <p><?php
+                        echo esc_html($recomendaciones);
+                        ?></p>
+                <?php
+                } else {
+                    echo '<p>No hay recomendaciones</p>';
+                }
+
+                ?>
+            </div>
 
             <div class="footer">
                 <p>Reporte generado el <?php echo date('d/m/Y H:i:s'); ?></p>

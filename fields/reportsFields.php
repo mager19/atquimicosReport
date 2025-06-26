@@ -612,6 +612,27 @@ function add_acf_fields()
                     ),
                 ),
             ),
+            array(
+                'key' => 'field_685d563883946',
+                'label' => 'Recomendaciones',
+                'name' => 'recomendaciones',
+                'aria-label' => '',
+                'type' => 'textarea',
+                'instructions' => '',
+                'required' => 0,
+                'conditional_logic' => 0,
+                'wrapper' => array(
+                    'width' => '',
+                    'class' => '',
+                    'id' => '',
+                ),
+                'default_value' => '',
+                'maxlength' => '',
+                'allow_in_bindings' => 0,
+                'rows' => '',
+                'placeholder' => '',
+                'new_lines' => '',
+            ),
         ),
         'location' => array(
             array(

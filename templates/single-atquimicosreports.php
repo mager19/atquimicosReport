@@ -174,29 +174,21 @@ $type = get_field('tipo', $post_id);
         echo '</table>';
     } else {
         echo '<p>No hay variables disponibles para este reporte.</p>';
-
-        // Debug desactivado para producción
-        // echo '<!-- DEBUG INFO: -->';
-        // echo '<!-- Post ID: ' . $post_id . ' -->';
-        // echo '<!-- Type: ' . ($type ? $type : 'NULL') . ' -->';
-        // echo '<!-- Variables found: ' . ($variables ? 'Yes' : 'No') . ' -->';
-        // echo '<!-- Variables type: ' . gettype($variables) . ' -->';
-        // if (is_array($variables)) {
-        //     echo '<!-- Variables count: ' . count($variables) . ' -->';
-        // }
-
-        // if (!$post_id) {
-        //     echo '<p><em>Error: No se pudo obtener el ID del post.</em></p>';
-        // } elseif (!$type) {
-        //     echo '<p><em>Error: No se pudo determinar el tipo de reporte.</em></p>';
-        // } else {
-        //     echo '<p><em>Tipo de reporte: ' . esc_html($type) . '</em></p>';
-        // }
     }
-
-
-
     ?>
-</div>
+    <div class="recomendaciones">
+        <h3>Recomendaciones</h3>
+        <?php
+        if (get_field('recomendaciones', $post_id)) { ?>
+            <p><?php
+                echo esc_html(get_field('recomendaciones', $post_id));
+                ?></p>
+        <?php
+        } else {
+            echo '<p>No hay recomendaciones</p>';
+        }
 
-<?php get_footer(); ?>
+        ?>
+    </div>
+
+    <?php get_footer(); ?>
