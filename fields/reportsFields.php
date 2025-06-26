@@ -73,45 +73,7 @@ function add_acf_fields()
                 'bidirectional' => 0,
                 'bidirectional_target' => array(),
             ),
-            array(
-                'key' => 'field_67111001aedd0',
-                'label' => 'Sedes',
-                'name' => 'sedes',
-                'aria-label' => '',
-                'type' => 'relationship',
-                'instructions' => 'Por favor selecciona una sede, puedes usar el buscador',
-                'required' => 1,
-                'conditional_logic' => array(
-                    array(
-                        array(
-                            'field' => 'field_670ecb5d52c03',
-                            'operator' => '!=empty',
-                        ),
-                    ),
-                ),
-                'wrapper' => array(
-                    'width' => '',
-                    'class' => '',
-                    'id' => '',
-                ),
-                'post_type' => array(
-                    0 => 'atquimicossedes',
-                ),
-                'post_status' => array(
-                    0 => 'publish',
-                ),
-                'taxonomy' => '',
-                'filters' => array(
-                    0 => 'search',
-                ),
-                'return_format' => 'object',
-                'min' => 1,
-                'max' => 1,
-                'allow_in_bindings' => 0,
-                'elements' => '',
-                'bidirectional' => 0,
-                'bidirectional_target' => array(),
-            ),
+
             array(
                 'key' => 'field_671120c319fde',
                 'label' => 'Tipo',

@@ -76,10 +76,30 @@ $type = get_field('tipo', $post_id);
     }
     ?>
     <h3>Informe: <?php the_title(); ?></h3>
+
     <p><span>Fecha: </span><?php echo $fecha ? esc_html($fecha) : 'No disponible'; ?></p>
-    <p><span>Técnico ATQuimicos: </span><?php echo ($tecnico && isset($tecnico['display_name'])) ? esc_html($tecnico['display_name']) : 'No disponible'; ?></p>
+
+    <div class="tecnico-info">
+        <p><span>Técnico ATQuimicos: </span><?php echo ($tecnico && isset($tecnico['display_name'])) ? esc_html($tecnico['display_name']) : 'No disponible'; ?></p>
+        <?php
+
+        $image = get_field('author_image', 'user_' . $cliente->ID);
+
+        if ($image) { ?>
+            <div class="img__cliente">
+                <?php
+                $avatarautor =  $image['ID'];
+                $size = 'full';
+
+                echo wp_get_attachment_image($avatarautor, $size); ?>
+            </div>
+        <?php
+        }
+        ?>
+    </div>
+
     <p><span>Cliente: </span><?php echo ($cliente && isset($cliente->display_name)) ? esc_html($cliente->display_name) : 'No disponible'; ?></p>
-    <p><span>Sede: </span><?php echo ($sede && is_array($sede) && count($sede) > 0 && isset($sede[0]->post_title)) ? esc_html($sede[0]->post_title) : 'No disponible'; ?></p>
+
 
 
     <?php
