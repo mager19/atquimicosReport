@@ -150,7 +150,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '0.',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -173,7 +173,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '10.5 - 11.5',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -196,7 +196,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 20',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -265,7 +265,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '100-400',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -288,7 +288,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '30 - 60',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -311,7 +311,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '30 - 60',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -334,7 +334,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => '30 - 60',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -456,7 +456,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 250',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -479,7 +479,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 9.0',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -525,7 +525,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Máximo 1500',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
@@ -548,7 +548,7 @@ function add_acf_fields()
                         'aria-label' => '',
                         'type' => 'number',
                         'instructions' => 'Min 5 - Máx 10',
-                        'required' => 1,
+                        'required' => 0,
                         'conditional_logic' => 0,
                         'wrapper' => array(
                             'width' => '',
