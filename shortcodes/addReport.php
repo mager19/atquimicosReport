@@ -15,7 +15,7 @@ if (!class_exists('AddReport')) {
         {
 
             $field['label'] = "Número del Reporte";
-            $field['instructions'] = "Por favor ingrese el nombre del reporte según el formato de reporte";
+            $field['instructions'] = "Por favor ingrese el número del reporte según el formato de reporte";
 
             return $field;
         }
