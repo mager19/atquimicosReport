@@ -14,7 +14,7 @@ if (!class_exists('AddReport')) {
         public function my_acf_prepare_field($field)
         {
 
-            $field['label'] = "Nombre del Reporte";
+            $field['label'] = "Número del Reporte";
             $field['instructions'] = "Por favor ingrese el nombre del reporte según el formato de reporte";
 
             return $field;
