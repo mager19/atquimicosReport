@@ -4,10 +4,10 @@
  * Plugin Name: AtquimicosReports
  * Plugin URI: https://www.wordpress.org/mv-translations
  * Description: Plugin generate client reports for Atquimicos
- * Version: 1.2.3
+ * Version: 1.2.4
  * Requires at least: 5.6
  * Requires PHP: 7.0
- * Author: Mario Reyes C
+ * Author: Mario Reyes C - Walter paz
  * Author URI: https://www.linkedin.com/in/mager19/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
